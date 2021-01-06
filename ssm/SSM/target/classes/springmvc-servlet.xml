@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/mvc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd
+">
+
+    <mvc:resources mapping="/static/**" location="/static/"></mvc:resources>
+
+
+   <!-- 原始连接Contorller
+    <bean name="/index.html" class="com.yuntu.controller.IndexController"></bean>
+    <bean name="/user" class="com.yuntu.controller.UserContorller"/>-->
+
+    <!--主配置文件读取其他的配置文件-->
+    <import resource="classpath:applicationContext.xml"/>
+    <!--注解方式连接Contorller-->
+    <context:component-scan base-package="controller"/>
+    <mvc:annotation-driven/>
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+
+    <!--全局异常的设置-->
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.RuntimeException">error</prop>
+            </props>
+        </property>
+    </bean>
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <!--path:需要拦截的路径-->
+            <mvc:mapping path="/**"/>
+            <bean class="interceptor.LogINInterceptor">
+                <property name="exceptUrls">
+                    <list>
+                        <value>/login.html</value>
+                        <value>/doLogin.html</value>
+                        <value>/add</value>
+                        <value>/add.html</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>
+</beans>

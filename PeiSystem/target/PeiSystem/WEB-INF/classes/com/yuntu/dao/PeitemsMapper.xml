@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuntu.dao.PeitemsMapper">
+    <resultMap id="tlists" type="peitems">
+        <id property="itemid" column="itemid"></id>
+        <result column="itemname" property="itemname"></result>
+        <result column="typeid" property="typeid"></result>
+        <result column="necessary" property="necessary"></result>
+        <result column="ref" property="ref"></result>
+        <result column="price" property="price"></result>
+        <result column="info" property="info"></result>
+        <association property="itemtype" javaType="itemtype">
+            <result property="typeid" column="typeid"></result>
+            <result property="typename" column="typename"></result>
+        </association>
+    </resultMap>
+    <select id="getCount" resultType="int">
+        select count(1) from peitems;
+    </select>
+    <select id="getPage" resultType="peitems" resultMap="tlists" parameterType="com.yuntu.uitl.pageUtil">
+        SELECT *,i.typename FROM peitems p
+        INNER JOIN itemtype i
+        ON p.typeid=i.typeid LIMIT ${(pageindex-1)*pagesize},#{pagesize}
+    </select>
+    <insert id="add" parameterType="peitems">
+        INSERT INTO peitems(itemname,typeid,necessary,ref,price,info)
+        VALUES(#{itemname},#{typeid},#{necessary},#{ref},#{price},#{info})
+    </insert>
+    <update id="upd" parameterType="peitems">
+        update peitems
+        set     itemname = #{itemname},
+                typeid = #{typeid},
+                necessary = #{necessary},
+                ref = #{ref},
+                price = #{price},
+                info = #{info}
+        where
+               itemid = #{itemid}
+    </update>
+    <select id="getById" parameterType="int" resultType="peitems">
+        select * from peitems where itemid=#{id}
+    </select>
+    <delete id="del" parameterType="int">
+        delete from peitems where itemid=#{id}
+    </delete>
+</mapper>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.bill.BillMapper">
+    <select id="getCount" resultType="int">
+        select count(1) from smbms_user;
+    </select>
+
+    <resultMap id="getPageAndProvider" type="Bill">
+        <id property="id" column="id"></id>
+        <result property="billCode" column="billCode"></result>
+        <result property="productName" column="productName"></result>
+        <result property="productDesc" column="productDesc"></result>
+        <result property="productUnit" column="productUnit"></result>
+        <result property="productCount" column="productCount"></result>
+        <result property="totalPrice" column="totalPrice"></result>
+        <result property="isPayment" column="isPayment"></result>
+        <result property="createdBy" column="createdBy"></result>
+        <result property="creationDate" column="creationDate"></result>
+        <result property="modifyBy" column="modifyBy"></result>
+        <result property="modifyDate" column="modifyDate"></result>
+        <result property="providerId" column="providerId"></result>
+        <association property="provider" javaType="provider">
+            <result property="proName" column="proName"></result>
+        </association>
+    </resultMap>
+    <select id="getPageAll" parameterType="com.yuntu.util.PageUtil" resultMap="getPageAndProvider">
+        select * from smbms_bill b inner join smbms_provider p on b.providerId = p.id limit ${(pageindex-1)*pagesize},#{pagesize}
+    </select>
+
+    <select id="getBillById" resultMap="getPageAndProvider" parameterType="int">
+        select * from smbms_bill b inner join smbms_provider p on b.providerId = p.id where b.id=#{id};
+    </select>
+
+    <update id="updBill" parameterType="bill">
+        update smbms_bill
+        <set>
+            <if test="billCode!=null and billCode!=''">
+                billCode = #{billCode},
+            </if>
+            <if test="productName!=null and productName!=''">
+                productName = #{productName},
+            </if>
+            <if test="productDesc!=null and productDesc!=''">
+                productDesc = #{productDesc},
+            </if>
+            <if test="productCount!=null and productCount!=''">
+                productCount = #{productCount},
+            </if>
+            <if test="totalPrice!=null and totalPrice!=''">
+                totalPrice = #{totalPrice},
+            </if>
+            <if test="isPayment!=null and isPayment!=''">
+                isPayment = #{isPayment},
+            </if>
+            <if test="createdBy!=null and createdBy!=''">
+                createdBy = #{createdBy},
+            </if>
+            <if test="creationDate!=null">
+                creationDate = #{creationDate},
+            </if>
+            <if test="modifyBy!=null and modifyBy!=''">
+                modifyBy = #{modifyBy},
+            </if>
+            <if test="modifyDate!=null">
+                modifyDate = #{modifyDate},
+            </if>
+            <if test="providerId!=null and providerId!=''">
+                providerId = #{providerId},
+            </if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+    <delete id="delBillById" parameterType="int">
+        delete from smbms_bill where id=#{id}
+    </delete>
+
+    <insert id="addBill" parameterType="bill">
+        insert into smbms_bill (
+        billCode,
+        productName,
+        productDesc,
+        productUnit,
+        productCount,
+        totalPrice,
+        isPayment,
+        createdBy,
+        creationDate,
+        modifyBy,
+        modifyDate,
+        providerId
+        )
+        value (#{billCode},#{productName},#{productDesc},#{productUnit},#{productCount},#{totalPrice},#{isPayment},#{createdBy},#{creationDate},#{modifyBy},#{modifyDate},#{providerId});
+    </insert>
+
+    <select id="getBillByCondition" resultMap="getPageAndProvider">
+        select * from smbms_bill b inner join smbms_provider p on b.providerId = p.id
+        <where>
+            <if test="productName!=null and productName!=''">
+                b.productName like concat('%',#{productName},'%')
+            </if>
+            <if test="providerId!=null and providerId!=0">
+                and b.providerId=#{providerId}
+            </if>
+            <if test="isPayment!=null and isPayment!=0">
+                and b.isPayment=#{isPayment}
+            </if>
+        </where>
+    </select>
+</mapper>

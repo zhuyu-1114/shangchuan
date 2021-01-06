@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--    <properties resource="database.properties"/>-->
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+        <!--autoMappingBehavior:自动映射级别  常用值：NONE禁止映射  PARTIAL自动映射(默认)  FULL全自动-->
+        <!--        <setting name="autoMappingBehavior" value="NONE"/>-->
+    </settings>
+    <!--类型的别名-->
+    <typeAliases>
+        <!--单个类型的别名-->
+        <!-- <typeAlias type="com.yuntu.pojo.Bill" alias="Bill"/>-->
+        <!--***整包类型的别名配置-->
+        <package name="com.yuntu.pojo"/>
+    </typeAliases>
+    <!--    <environments default="development">-->
+    <!--        <environment id="development">-->
+    <!--            &lt;!&ndash; 配置JDBC事务,此事务由mybatis管理 &ndash;&gt;-->
+    <!--            &lt;!&ndash;使用JDBC事务的方式&ndash;&gt;-->
+    <!--            <transactionManager type="JDBC"/>-->
+    <!--            &lt;!&ndash;数据源&ndash;&gt;-->
+    <!--            &lt;!&ndash; 配置连接池,此连接池为mybatis连接池 &ndash;&gt;-->
+    <!--            <dataSource type="POOLED">-->
+    <!--                <property name="driver" value="${driver}"/>-->
+    <!--                <property name="url" value="${url}"/>-->
+    <!--                <property name="username" value="${username}"/>-->
+    <!--                <property name="password" value="${password}"/>-->
+    <!--            </dataSource>-->
+    <!--        </environment>-->
+    <!--    </environments>-->
+
+    <!-- Mapper.xml配置文件的注册-->
+    <!--    <mappers>-->
+    <!--        <mapper resource="com/yuntu/dao/goodsMapper.xml"/>-->
+    <!--    </mappers>-->
+</configuration>

@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yuntu.dao.TeacherMapper">
+    <resultMap id="tlists" type="teacher">
+        <id property="t_id" column="t_id"></id>
+        <result column="t_name" property="t_name"></result>
+        <result column="t_idcard" property="t_idcard"></result>
+        <result column="t_birthday" property="t_birthday"></result>
+        <result column="t_loginName" property="t_loginName"></result>
+        <result column="t_pwd" property="t_pwd"></result>
+        <result column="t_sex" property="t_sex"></result>
+        <association property="sex" javaType="sex">
+            <result property="s_id" column="s_id"></result>
+            <result property="s_sex" column="s_sex"></result>
+        </association>
+    </resultMap>
+    <select id="getCount" resultType="int">
+        select count(1) from teacher;
+    </select>
+    <select id="getPage" resultType="teacher" resultMap="tlists" parameterType="com.yuntu.uitl.pageUtil">
+        SELECT *,s.s_sex FROM teacher t
+        INNER JOIN sex s
+        ON t.t_sex=s.s_id LIMIT ${(pageindex-1)*pagesize},#{pagesize}
+    </select>
+    <insert id="add" parameterType="teacher">
+        INSERT INTO teacher(t_name,t_idcard,t_birthday,t_loginName,t_pwd,t_sex) VALUES(#{t_name},#{t_idcard},#{t_birthday},#{t_loginName},#{t_pwd},#{t_sex})
+    </insert>
+    <update id="upd" parameterType="teacher">
+        update teacher
+        set     t_name = #{t_name},
+                t_idcard = #{t_idcard},
+                t_birthday = #{t_birthday},
+                t_loginName = #{t_loginName},
+                t_pwd = #{t_pwd},
+                t_sex = #{t_sex}
+        where
+               t_id = #{t_id}
+    </update>
+    <select id="getById" parameterType="int" resultType="teacher">
+        select * from teacher where t_id=#{id}
+    </select>
+    <delete id="del" parameterType="int">
+        delete from teacher where t_id=#{id}
+    </delete>
+</mapper>

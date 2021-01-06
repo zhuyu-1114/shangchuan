@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.ProductMapper">
+    <resultMap id="plists" type="Product">
+        <id property="id" column="id"></id>
+        <result column="name" property="name"></result>
+        <result column="price" property="price"></result>
+        <result column="stock" property="stock"></result>
+        <result column="fileName" property="fileName"></result>
+        <result column="typeId" property="typeId"></result>
+        <association property="type" javaType="type">
+            <result property="id" column="id"></result>
+            <result property="name" column="name"></result>
+        </association>
+    </resultMap>
+    <select id="getCount" resultType="int">
+        select count(1) from product;
+    </select>
+    <select id="getPage" parameterType="com.yuntu.pojo.PageUtil" resultMap="plists">
+        SELECT *,t.name FROM product p
+        INNER JOIN TYPE t
+        ON p.typeId=t.id LIMIT ${(pageindex-1)*pagesize},#{pagesize}
+    </select>
+    <delete id="delPro" parameterType="int">
+        delete from product where id=#{id};
+    </delete>
+    <insert id="addPro" parameterType="product">
+        INSERT INTO product(name,price,stock,fileName,typeId) VALUES(#{name},#{price},#{stock},#{fileName},#{typeId});
+    </insert>
+    <update id="updPro" parameterType="product">
+       update product
+       <set>
+           <if test="name!=null and name!=''">
+               name=#{name};
+           </if>
+           <if test="price!=null nad price!=''">
+               price=#{price}
+           </if>
+           <if test="stock!=null nad stock!=''">
+               stock=#{stock}
+           </if>
+           <if test="fileName!=null nad fileName!=''">
+               fileName=#{fileName}
+           </if>
+           <if test="typeId!=null nad typeId!=''">
+               typeId=#{typeId}
+           </if>
+       </set>
+       where id=#{id};
+    </update>
+</mapper>

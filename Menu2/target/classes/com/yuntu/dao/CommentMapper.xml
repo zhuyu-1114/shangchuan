@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.CommentMapper">
+    <select id="getAll" resultType="Comment">
+        select * from comment where mid=#{mid};
+    </select>
+    <insert id="addComm" parameterType="Comment">
+        insert into comment(mid,content,createDate) values (#{mid},#{content},#{createDate});
+    </insert>
+    <delete id="delComm" parameterType="int">
+        delete from comment where cid=#{cid}
+    </delete>
+    <delete id="del" parameterType="int">
+        delete from comment where mid=#{mid}
+    </delete>
+</mapper>

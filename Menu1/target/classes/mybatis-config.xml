@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="database.properties"/>
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+    <typeAliases>
+        <!--<typeAlias type="com.yuntu.pojo.Bill" alias="Bill"/>-->
+        <!--整包类型的别名配置-->
+        <package name="com.yuntu.pojo"/>
+    </typeAliases>
+    <!--<environments default="development">
+        <environment id="development">
+            &lt;!&ndash;使用JDBC事务的方式&ndash;&gt;
+            <transactionManager type="JDBC"/>
+            &lt;!&ndash;数据源&ndash;&gt;
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${name}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>-->
+    <!-- Mapper.xml配置文件的注册 -->
+    <!--<mappers>
+        <mapper resource="com/yuntu/dao/StudentMapper.xml"/>
+    </mappers>-->
+</configuration>

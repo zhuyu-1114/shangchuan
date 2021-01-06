@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+	http://www.springframework.org/schema/tx
+	http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+    <!--配置数据源-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <property name="url">
+            <value><![CDATA[jdbc:mysql://localhost:3306/stuinfo?useUnicode=true&amp;characterEncoding=utf-8]]></value>
+        </property>
+        <property name="username" value="root"/>
+        <property name="password" value="123456"/>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+        <property name="mapperLocations">
+            <list>
+            <value>classpath:com/yuntu/dao/*.xml</value>
+            </list>
+        </property>
+    </bean>
+    <!--手动编码配置Dao层-->
+    <!--<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>
+
+    <bean id="StudentDao" class="com.yuntu.dao.StudentDaoMapperImpl">
+        <property name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+    </bean>
+
+    <bean id="StudentBiz" class="com.yuntu.biz.StudentBizImpl">
+        <property name="studentMapper" ref="StudentDao"/>
+    </bean>-->
+
+    <!--<bean id="StudentMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+        <property name="mapperInterface" value="com.yuntu.dao.StudentMapper"/>
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    </bean>-->
+
+    <!--<bean id="StudentBiz" class="com.yuntu.biz.StudentBizImpl">
+        <property name="studentMapper" ref="StudentMapper"/>
+    </bean>-->
+    <!--MapperScannerConfigurer:自动装配  默认规则：首字母小写-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+        <property name="basePackage" value="com.yuntu.dao"/>
+    </bean>
+    <context:component-scan base-package="com.yuntu.biz,com.yuntu.dao"/>
+
+
+    <!--事务是什么？事务时保证业务操作完整性的一种机制-->
+    <!--A.原子性
+        C.一致性
+        I.隔离性
+        D.持久性
+    -->
+    <!--
+        JDBC中的事务
+        Connection.setAutoCommit(false)
+        Connection.commit()
+        Connection.rollback()
+    -->
+    <!--
+        commit();
+        rollback();
+    -->
+    <!--通过Spring中的AOP,注入事务(声明式事务)-->
+    <!--事务管理器-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!--注解方式-->
+    <tx:annotation-driven transaction-manager="txManager"/>
+
+</beans>

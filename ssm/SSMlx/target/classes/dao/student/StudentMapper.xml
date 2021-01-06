@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="dao.student.StudentMapper">
+    <select id="getPage" parameterType="pageUtil" resultType="student">
+        select * from student
+        limit ${(pageindex-1)*pagesize},#{pagesize};
+    </select>
+    <select id="Count" resultType="int">
+        select count(1) from student
+    </select>
+    <insert id="addStu" parameterType="student">
+        insert into student(
+        name,
+        birthday,
+        sex
+        )
+        values(#{name},
+        #{birthday},
+        #{sex}
+        )
+    </insert>
+    <delete id="delStu" parameterType="int">
+        delete from student where id = #{id}
+    </delete>
+    <update id="updStu"  parameterType="student">
+        update student
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="birthday!=null">
+                birthday=#{birthday},
+            </if>
+            <if test="sex!=null and sex!=''">
+                sex=#{sex},
+            </if>
+
+        </set>
+         where id=#{id}
+    </update>
+    <select id="getStuById" resultType="student">
+        select * from student
+        where id=#{id};
+    </select>
+</mapper>

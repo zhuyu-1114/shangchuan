@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.CommentMapper">
+    <select id="selOne" parameterType="int" resultType="com.yuntu.pojo.Comment">
+        SELECT * FROM `comment` WHERE `sid`=#{sid};
+    </select>
+
+    <delete id="delComm" parameterType="int">
+        delete from `comment` where cid=#{cid};
+    </delete>
+
+    <insert id="addComm" parameterType="com.yuntu.pojo.Comment">
+        INSERT INTO `comment` (`sid`,`content`,`createDate`) VALUES(#{sid}, #{content}, #{createDate});
+    </insert>
+    <update id="updComm" parameterType="com.yuntu.pojo.Comment">
+        update `comment`
+        <set>
+            <if test="sid!=null and sid!=0">
+                sid=#{sid},
+            </if>
+            <if test="content!=null and content!=''">
+                content=#{content},
+            </if>
+            <if test="createDate!=null">
+                createDate=#{createDate},
+            </if>
+        </set>
+        <where>
+            <if test="cid!=null and cid!=0">
+                cid=#{cid};
+            </if>
+        </where>
+    </update>
+    <select id="selOneC" resultType="Comment" parameterType="int">
+        select * from `comment` where cid=#{cid};
+    </select>
+</mapper>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.user.UserMapper">
+    <resultMap id="getUserRole" type="User">
+        <id property="id" column="id"></id>
+        <result property="userCode" column="userCode"></result>
+        <result property="userName" column="userName"></result>
+        <result property="userPassword" column="userPassword"></result>
+        <result property="gender" column="gender"></result>
+        <result property="birthday" column="birthday"></result>
+        <result property="phone" column="phone"></result>
+        <result property="address" column="address"></result>
+        <result property="userRole" column="userRole"></result>
+        <result property="createdBy" column="createdBy"></result>
+        <result property="creationDate" column="creationDate"></result>
+        <result property="modifyBy" column="modifyBy"></result>
+        <result property="modifyDate" column="modifyDate"></result>
+        <association property="role" javaType="role">
+            <result property="roleName" column="roleName"></result>
+        </association>
+    </resultMap>
+    <select id="Login" resultMap="getUserRole">
+        select u.*,r.roleName from smbms_user u inner join smbms_role r on u.userRole=r.id where u.userCode=#{userCode} and u.userPassword=#{userPassword};
+    </select>
+    <update id="updPwd">
+        update smbms_user set userPassword=#{pwd} where id=#{id}
+    </update>
+    <select id="getUserPage" resultMap="getUserRole" parameterType="com.yuntu.util.PageUtil">
+        select u.*,r.roleName from smbms_user u inner join smbms_role r on u.userRole=r.id limit ${(pageindex-1)*pagesize},#{pagesize};
+    </select>
+    <select id="getUserById" resultMap="getUserRole" parameterType="int">
+        select u.*,r.roleName from smbms_user u inner join smbms_role r on u.userRole=r.id where u.id=#{id};
+    </select>
+    <select id="getCount" resultType="int">
+        select count(1) from smbms_user u inner join smbms_role r on u.userRole=r.id;
+    </select>
+    <insert id="addUser" parameterType="user">
+        insert into smbms_user(
+        userCode,
+        userName,
+        userPassword,
+        gender,
+        birthday,
+        phone,
+        address,
+        userRole,
+        createdBy,
+        creationDate
+        ) value (#{userCode},#{userName},#{userPassword},#{gender},#{birthday},#{phone},#{address},#{userRole},#{createdBy},#{creationDate});
+    </insert>
+    <update id="updUser" parameterType="user">
+        update smbms_user
+        <set>
+            <if test="userCode!=null and userCode!=''">
+                userCode = #{userCode},
+            </if>
+            <if test="userName!=null and userName!=''">
+                userName = #{userName},
+            </if>
+            <if test="userPassword!=null and userPassword!=''">
+                userPassword = #{userPassword},
+            </if>
+            <if test="gender!=null and gender!=0">
+                gender = #{gender},
+            </if>
+            <if test="birthday!=null">
+                birthday = #{birthday},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone = #{phone},
+            </if>
+            <if test="address!=null and address!=''">
+                address = #{address},
+            </if>
+            <if test="userRole!=null and userRole!=0">
+                userRole = #{userRole},
+            </if>
+            <if test="modifyBy!=null and modifyBy!=''">
+                modifyBy = #{modifyBy},
+            </if>
+            <if test="modifyDate!=null">
+                modifyDate = #{modifyDate}
+            </if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+    <delete id="delUser" parameterType="int">
+        delete from smbms_user where id= #{id};
+    </delete>
+    <select id="getUserByCondition" resultMap="getUserRole">
+        select u.*,r.roleName from smbms_user u inner join smbms_role r on u.userRole=r.id
+        <where>
+            <if test="userName!=null and userName!=''">
+                u.userName like concat("%",#{userName},"%")
+            </if>
+            <if test="userRole!=null and userRole!=0">
+                and u.userRole like concat("%",#{userRole},"%")
+            </if>
+        </where>
+    </select>
+</mapper>

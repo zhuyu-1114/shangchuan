@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yuntu.dao.provider.ProviderMapper">
+    <select id="getProviderAll" resultType="Provider">
+        select * from smbms_provider;
+    </select>
+
+    <select id="getProviderById" resultType="provider" parameterType="int">
+        select * from smbms_provider  where id=#{id};
+    </select>
+
+    <update id="updProvider" parameterType="provider">
+        update smbms_provider
+        <set>
+            <if test="proCode!=null and proCode!=''">
+                proCode = #{proCode},
+            </if>
+            <if test="proName!=null and proName!=''">
+                proName = #{proName},
+            </if>
+            <if test="proDesc!=null and proDesc!=''">
+                proDesc = #{proDesc},
+            </if>
+            <if test="proContact!=null and proContact!=''">
+                proContact = #{proContact},
+            </if>
+            <if test="proPhone!=null and proPhone!=''">
+                proPhone = #{proPhone},
+            </if>
+            <if test="proAddress!=null and proAddress!=''">
+                proAddress = #{proAddress},
+            </if>
+            <if test="proFax!=null and proFax!=''">
+                proFax = #{proFax},
+            </if>
+            <if test="createdBy!=null and createdBy!=0">
+                createdBy = #{createdBy},
+            </if>
+            <if test="creationDate!=null ">
+                creationDate = #{creationDate},
+            </if>
+            <if test="modifyDate!=null">
+                modifyDate = #{modifyDate},
+            </if>
+            <if test="modifyBy!=null and modifyBy!=0">
+                modifyBy = #{modifyBy},
+            </if>
+        </set>
+        <where>
+            id=#{id}
+        </where>
+    </update>
+
+    <delete id="delProviderById" parameterType="int">
+        delete from smbms_provider where id=#{id}
+    </delete>
+
+    <insert id="addProvider" parameterType="provider">
+        insert into smbms_provider (
+        proCode,
+        proName,
+        proDesc,
+        proContact,
+        proPhone,
+        proAddress,
+        proFax,
+        createdBy,
+        creationDate,
+        modifyDate,
+        modifyBy
+        )
+        value (#{proCode},#{proName},#{proDesc},#{proContact},#{proPhone},#{proAddress},#{proFax},#{createdBy},#{creationDate},#{modifyDate},#{modifyBy});
+    </insert>
+
+    <select id="getProviderByCondition" resultType="provider">
+        select * from smbms_provider
+        <where>
+            <if test="proCode!=null and proCode!=''">
+                proCode like concat('%',#{proCode},'%')
+            </if>
+            <if test="proName!=null and proName!=''">
+                and proName like concat('%',#{proName},'%')
+            </if>
+        </where>
+    </select>
+</mapper>

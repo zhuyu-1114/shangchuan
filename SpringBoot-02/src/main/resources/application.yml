@@ -1,0 +1,26 @@
+#全局的配置
+server:
+  port: 8080
+---
+
+server:
+  port: 8084
+spring:
+  profiles: c
+
+java -jar 名称 --Spring.profiles.active=a
+
+
+#
+#student:
+#  userName: zhangsan
+#  age: 18
+#  flag: false
+#  brith: 2003/01/06
+#  maps: {key1: 123,key2: 456}
+#  lists: #[lists1 ， lists2]
+#    - lists1
+#    - lists2
+#  pet:
+#    name: 狗
+#    age: 12

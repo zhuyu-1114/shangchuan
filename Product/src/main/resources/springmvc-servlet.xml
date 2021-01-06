@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+    http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <mvc:resources mapping="/js/**" location="/js/"></mvc:resources>
+    <!--主配置文件读取其他配置文件-->
+    <import resource="classpath:ApplicationContext.xml"></import>
+    <!--通过注解的方式-->
+    <context:component-scan  base-package="com.yuntu.cotroller"/>
+    <mvc:annotation-driven/>
+    <!--<bean name="/index.html" class="com.yuntu.controller.IndexController"></bean>-->
+    <!--视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/jsp/"></property>
+        <property name="suffix" value=".jsp"></property>
+    </bean>
+    <!--&lt;!&ndash;全局异常的处理&ndash;&gt;
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.RuntimeException">error</prop>
+            </props>
+        </property>
+    </bean>-->
+    <!--拦截器-->
+    <!--<mvc:interceptors>
+        <mvc:interceptor>
+            &lt;!&ndash;path：需要拦截的路径&ndash;&gt;
+            <mvc:mapping path="/**"/>
+            <bean class="com.yuntu.interceptor.LoginInterceptor">
+                <property name="exceptUrls">
+                    <list>
+                        <value>/login</value>
+                        <value>/doLogin</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:interceptor>
+    </mvc:interceptors>-->
+
+    <!--文件解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8"></property>
+        <property name="maxUploadSize" value="10485760"></property>
+        <property name="maxInMemorySize" value="40960"></property>
+    </bean>
+</beans>

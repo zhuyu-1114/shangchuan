@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!--<properties resource="database.properties"/>-->
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+        <!-- autoMappingBehavior:自动映射级别
+                常用值：  NONE禁止映射
+                        PARTIAL自动映射(默认)
+                        FULL全自动-->
+        <setting name="autoMappingBehavior" value="PARTIAL"/>
+    </settings>
+    <!-- 类型的别名 -->
+    <typeAliases>
+        <!-- 单个类型的别名配置 -->
+        <!--<typeAlias type="com.yuntu.pojo.Bill" alias="Bill"></typeAlias>-->
+        <!--整包类型的别名配置-->
+        <package name="pojo"/>
+    </typeAliases>
+    <!--<environments default="development">
+        <environment id="development">
+            &lt;!&ndash; 配置JDBC事务,此事务由mybatis管理 &ndash;&gt;
+            <transactionManager type="JDBC"></transactionManager>
+            &lt;!&ndash; 配置连接池,此连接池为mybatis连接池 &ndash;&gt;
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${name}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>-->
+
+    <!-- 配置环境 -->
+    <!--<environments default="mysql">
+        &lt;!&ndash; 配置mysql环境 &ndash;&gt;
+        <environment id="mysql">
+            &lt;!&ndash; 配置事务 &ndash;&gt;
+            <transactionManager type="JDBC"></transactionManager>
+            &lt;!&ndash; 配置连接池 UNPOOLED POOLED JNDI &ndash;&gt;
+            <dataSource type="JNDI">
+                <property name="data_source"  value="java:comp/env/jdbc/student"/>
+            </dataSource>
+        </environment>
+    </environments>-->
+<!--    Mapper.xml配置文件的注册-->
+    <!--<mappers>
+        <mapper resource="com/yuntu/dao/StudentMapper.xml"/>
+    </mappers>-->
+</configuration>
